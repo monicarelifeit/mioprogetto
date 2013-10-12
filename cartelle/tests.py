@@ -4,13 +4,17 @@ when you run "manage.py test".
 
 Replace this with more appropriate tests for your application.
 """
-from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from rest_framework.test import APIRequestFactory, force_authenticate
-import json
-import sys
+from django.contrib.auth import authenticate
+from rest_framework import request
+
+
 from django.contrib.auth.models import User, Group
+from cartelle.models import Cartella
+
+import json
 from django.core import mail
 
 class CartelleTests(APITestCase):
@@ -20,10 +24,21 @@ class CartelleTests(APITestCase):
         """
         print '\n\n\n\n==========START test_create_cartella =================================='
         url = '/cartelle/'
-        dati_json = {'nameIT': 'DabApps','nameEN': 'DabApps2'}
+        dati_json = {'nameIT': 'ProvaCartella','nameEN': 'ProvaCartella2'}
+        #response = self.client.post(url, dati_json, format='json')
+        #self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertFalse(Cartella.objects.count())
+
+        user = User(username='test', email='test@example.com')
+        user.set_password('test')
+        user.save()
+
+        self.client.login(username='test', password='test')
         response = self.client.post(url, dati_json, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        print 'OK cartella inserita'
+        
+        print ('stampa cartella: %s' % response.data)
+        #print ('stampa2: %s' % response2)
         print '==========END \n\n\n\n'
 
 class UserTests(APITestCase):
@@ -35,7 +50,7 @@ class UserTests(APITestCase):
         # inseriamo 2 utenti
         url = '/users/'
         dati_json = {'url': 'http://127.0.0.1:8000/users/1/', 'username': 'monica', 'email': 'monica.bramuzzi@relifeit.com', 'groups': []}
-        response = self.client.post(url, dati_json, format='json')
+        response = self.client.post(url, data=dati_json, format='json')
         url = '/users/'
         dati_json = {'url': 'http://127.0.0.1:8000/users/2/', 'username': 'omar', 'email': 'omar.quattrin@relifeit.com', 'groups': []}
         response = self.client.post(url, dati_json, format='json')
