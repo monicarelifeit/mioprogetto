@@ -25,8 +25,6 @@ class CartelleTests(APITestCase):
         print '\n\n\n\n==========START test_create_cartella =================================='
         url = '/cartelle/'
         dati_json = {'nameIT': 'ProvaCartella','nameEN': 'ProvaCartella2'}
-        #response = self.client.post(url, dati_json, format='json')
-        #self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertFalse(Cartella.objects.count())
 
         user = User(username='test', email='test@example.com')
@@ -38,7 +36,6 @@ class CartelleTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         
         print ('stampa cartella: %s' % response.data)
-        #print ('stampa2: %s' % response2)
         print '==========END \n\n\n\n'
 
 class UserTests(APITestCase):

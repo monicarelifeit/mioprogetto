@@ -50,10 +50,7 @@ class CartellaViewSet(viewsets.ModelViewSet):
 
     #def Caching_QuerySets(self, request):
     #    # prova a prendere lista cartelle dalla cache
-    #    print([p.Cartella for p in queryset])
     #    # se trovata, return
-    #    #print([p.cartelle for p in queryset])
     #    # se non trovata, quuery dal db e setta la cache
-    #    queryset = Cartella.objects.all()
     #    # return
     #    # pass
